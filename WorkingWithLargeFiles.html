@@ -135,6 +135,22 @@ While git is terrific for a great number of use cases, it has trouble with large
 <span class="comment"># Push our rewritten, smaller commit</span>
 </pre>
 
+<p>You may need to remove large files from <em>far back</em> in your repository history - the quickest way to do this
+is with <a href="http://rtyley.github.io/bfg-repo-cleaner/">The BFG</a> (a faster, simpler alternative to
+<code><a href="http://git-scm.com/docs/git-filter-branch">git-filter-branch</a></code>):
+</p>
+
+<pre class="command-line">
+<span class="command">bfg --strip-blobs-bigger-than 50M</span>
+<span class="comment"># Git history will be cleaned - files in your latest commit will <em>not</em> be touched</span>
+</pre>
+
+<p><em>See The BFG's documentation for full <a href="http://rtyley.github.io/bfg-repo-cleaner/#usage">usage</a>
+and <a href="http://rtyley.github.io/bfg-repo-cleaner/#download">download</a> instructions.</em></p>
+
+<h4>
+<a name="files-youve-already-pushed" class="anchor" href="./WorkingWithLargeFiles_files/WorkingWithLargeFiles.html"><span class="mini-icon mini-icon-link"></span></a>Files you've already pushed</h4>
+
 <p>We won't remove any excessively large files that have already been pushed to your GitHub repositories. However, if you update any of these files locally, you won't be able to push the update.</p>
 
 <h3>

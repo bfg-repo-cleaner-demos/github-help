@@ -90,7 +90,8 @@
 
   <div class="article-body content-body wikistyle markdown-format">
       <p class="intro">
-From time to time users accidentally commit data like passwords or keys into a git repository.  While you can use <code>git rm</code> to remove the file, it will still be in the repository's history.  Fortunately, git makes it fairly simple to remove the file from the entire repository history.
+From time to time users accidentally commit data like passwords or keys into a git repository.  While you can use <code>git rm</code> to remove the file, it will still be in the repository's history.  Fortunately, it's possible to remove unwanted files from the whole of repository history too, using either Git's in-built
+<code><a href="http://git-scm.com/docs/git-filter-branch">filter-branch</a></code> tool, or more easily &amp; quickly using <a href="http://rtyley.github.io/bfg-repo-cleaner/">The BFG Repo-Cleaner</a>.
 </p>
 
 <div class="alert error">
@@ -155,6 +156,24 @@ From time to time users accidentally commit data like passwords or keys into a g
 
 <p>As a special note: if you need to purge a file that has been moved since creation, you need to also run the <code>filter-branch</code> step on all former paths.</p>
 
+<h4>
+<a name="rewrite-history-with-the-bfg" class="anchor" href="https://help.github.com/articles/remove-sensitive-data#rewrite-history-with-the-bfg"><span class="mini-icon mini-icon-link"></span></a>Using The BFG as an alternative to git-filter-branch</h4>
+
+<p><a href="http://rtyley.github.io/bfg-repo-cleaner/">The BFG</a> is a faster, simpler alternative to <code>git-filter-branch</code>, dedicated to removing unwanted data - for example:</p>
+
+<pre class="command-line">
+<span class="command">bfg --delete-file Rakefile</span>
+<span class="comment"># Remove any file named 'Rakefile' (leaves your latest commit untouched)</span>
+</pre>
+<p>or</p>
+<pre class="command-line">
+<span class="command">bfg --replace-text passwords.txt</span>
+<span class="comment"># Search-and-replace text (in this case, passwords) in all files in repo history</span>
+</pre>
+
+<p><em>See The BFG's documentation for full <a href="http://rtyley.github.io/bfg-repo-cleaner/#usage">usage</a>
+and <a href="http://rtyley.github.io/bfg-repo-cleaner/#download">download</a> instructions.</em></p>
+
 <h3>
 <a name="cleanup-and-reclaiming-space" class="anchor" href="https://help.github.com/articles/remove-sensitive-data#cleanup-and-reclaiming-space"><span class="mini-icon mini-icon-link"></span></a>Cleanup and reclaiming space</h3>
 
@@ -202,6 +221,7 @@ From time to time users accidentally commit data like passwords or keys into a g
 <ul>
 <li><a href="http://git-scm.com/docs/git-filter-branch">Git-filter-branch man page</a></li>
 <li><a href="http://git-scm.com/book/en/Git-Tools-Rewriting-History">Pro Git: Git Tools - Rewriting History</a></li>
+<li><a href="http://rtyley.github.io/bfg-repo-cleaner/">The BFG Repo-Cleaner</a> - removes large or troublesome blobs like git-filter-branch does, but faster</li>
 </ul>
   </div>
 
