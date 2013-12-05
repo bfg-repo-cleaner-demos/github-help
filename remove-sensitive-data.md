@@ -1,5 +1,5 @@
 ``` intro
-From time to time users accidentally commit data like passwords or keys into a git repository.  While you can use <code>git rm</code> to remove the file, it will still be in the repository's history.  Fortunately, git makes it fairly simple to remove the file from the entire repository history.
+From time to time users accidentally commit data like passwords or keys into a git repository.  While you can use <code>git rm</code> to remove the file, it will still be in the repository's history.  Fortunately, it's possible to remove unwanted files from the whole of repository history too, using either Git's in-built <code>filter-branch</code> tool, or more easily & quickly using The BFG Repo-Cleaner.
 ```
 
 {{#error}}
@@ -65,6 +65,24 @@ You will need to run this for every branch and tag that was changed.  The `--all
 
 As a special note: if you need to purge a file that has been moved since creation, you need to also run the `filter-branch` step on all former paths.
 
+#### Using The BFG as an alternative to git-filter-branch
+
+[The BFG] [7] is a faster, simpler alternative to <code>git-filter-branch</code>, dedicated to removing unwanted data - for example:
+
+``` command-line
+$ bfg --delete-file Rakefile
+# Remove any file named 'Rakefile' (leaves your latest commit untouched)
+```
+
+or
+
+``` command-line
+$ bfg --replace-text passwords.txt
+# Search-and-replace text (in this case, passwords) in all files in repo history
+```
+
+*See The BFG's documentation for full [usage](http://rtyley.github.io/bfg-repo-cleaner/#usage) and [download](http://rtyley.github.io/bfg-repo-cleaner/#download) instructions.*
+
 ### Cleanup and reclaiming space
 
 While `git filter-branch` rewrites the history for you, the objects remain in your local repository until they've been dereferenced and garbage collected.  If you are working in your main repository, you might want to force these objects to be purged.
@@ -107,6 +125,7 @@ There are a few simple tricks to avoid committing things you don't want committe
 
 * [Git-filter-branch man page] [5]
 * [Pro Git: Git Tools - Rewriting History] [6]
+* [The BFG Repo-Cleaner] [7] - removes large or troublesome blobs like git-filter-branch does, but faster
 
 [1]: http://github.com/defunkt/github-gem
 [2]: https://github.com/contact
@@ -114,3 +133,4 @@ There are a few simple tricks to avoid committing things you don't want committe
 [4]: http://rowanj.github.io/gitx/
 [5]: http://git-scm.com/docs/git-filter-branch
 [6]: http://git-scm.com/book/en/Git-Tools-Rewriting-History
+[7]: http://rtyley.github.io/bfg-repo-cleaner/

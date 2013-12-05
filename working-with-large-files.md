@@ -30,15 +30,11 @@ This push was rejected by GitHub because of `giant_file`. The commits pushed are
 
 #### Fixing the problem
 
-To fix the problem, you'll first want to remove the large file from git:
+To fix the problem, you'll want to completely remove the large file from Git. If the file was added with your most recent commit, you can just delete the file and amend the commit:
 
 ``` command-line
-$ git filter-branch --force --index-filter \
-  'git rm --cached --ignore-unmatch giant_file' \
-  --prune-empty --tag-name-filter cat -- --all
-> Rewrite 48dc599c80e20527ed902928085e7861e6b3cbe6 (266/266)
-> Ref 'refs/heads/master' was rewritten
-# Wipe out our giant file from Git
+$ git rm --cached giant_file
+# Stage our giant file for removal, but leave it on disk
 
 $ git commit --amend -CHEAD
 # Amend the previous commit with your change
@@ -48,6 +44,15 @@ $ git commit --amend -CHEAD
 $ git push
 # Push our rewritten, smaller commit
 ```
+
+You may need to remove large files from *far back* in your repository history - the quickest way to do this is with [The BFG](http://rtyley.github.io/bfg-repo-cleaner/) (a faster, simpler alternative to <code>git-filter-branch</code>):
+
+``` command-line
+$ bfg --strip-blobs-bigger-than 50M
+# Git history will be cleaned - files in your latest commit will *not* be touched
+```
+
+*See The BFG's documentation for full [usage](http://rtyley.github.io/bfg-repo-cleaner/#usage) and [download](http://rtyley.github.io/bfg-repo-cleaner/#download) instructions.*
 
 We won't remove any excessively large files that have already been pushed to your GitHub repositories. However, if you update any of these files locally, you won't be able to push the update.
 
